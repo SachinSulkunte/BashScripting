@@ -1,3 +1,5 @@
+Code implemented in unscramble.c
+
 Code reads in decryption commands from a specified file (sample: alice.script)
 Commands are formatted as: <operation> <size> <offset> <constant>
 All operations are performed using unsigned arithmetic, ignoring overflow.
