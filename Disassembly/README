@@ -1,4 +1,4 @@
-my_memcmp() - implementation of memcmp() C library function as x86_64 assembly language (intel syntax)
+my_memcmp() - implementation of memcmp() C library function in x86_64 assembly language (intel syntax)
 
 part*.dis - static analysis of assembly code to determine correct password and encryption algorithm (see comments)
 
