@@ -1,0 +1,15 @@
+#!/bin/bash
+if [[ -z $1 || -n $2 ]]
+then
+	exit 9
+elif [[ $1 == "Sachin" ]]
+then
+	exit 1
+else
+	if [ -e names.file ]
+	then
+		echo $1  >> names.file
+	else
+		echo $1 > names.file
+	fi
+fi
