@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [[ ! -p control.sock ]]
+then
+  mkfifo control.sock    #creates pipe if it doesn't exist
+fi
+
+while true
+do
+  while read -r line;
+  do
+    if [[ $line == "now" ]] #directive 1
+    then
+      echo "---BEGIN---" >> output.log
+      echo $(date -Is) >> output.log   #ISO 8601 format
+      echo "---END---" >> output.log
+    elif [[ $(echo $line | cut -d ' ' -f1) == "show" ]]   #takes first word
+    then
+      filepath=$(echo $line | cut -d ' ' -f2)
+      if [[ -e $filepath ]]
+      then
+        echo "---BEGIN---" >> output.log
+        cat $home$filepath >> output.log
+        echo "---END---" >> output.log
+      else
+        echo "---BEGIN---" >> output.log
+        echo "BAD FILE" >> output.log
+        echo "---END---" >> output.log
+      fi
+    elif [[ $(echo $line | cut -d ' ' -f1) == "log" ]]
+    then
+      echo $line > place.txt
+      echo "---BEGIN---" >> output.log
+      echo $(colrm 1 4 < place.txt) >> output.log
+      echo "---END---" >> output.log
+    fi
+  done < control.sock
+done
+

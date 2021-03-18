@@ -1,0 +1,26 @@
+#!/bin/bash
+echo "Question 1: $(wc -l auth.log | cut -d ' ' -f1)"
+echo "Question 2: $(grep Connection auth.log | wc -l)"
+echo "Question 3: $(grep Connection auth.log | cut -d' ' -f8 | sort | uniq | wc -l)"
+
+grep "Failed password" auth.log | cut -d ' ' -f9 | sort | uniq > diffNames #get unique names
+grep "Failed password" auth.log | cut -d ' ' -f9 | sort > nameFile  #get usernames
+lowest=$(head -1 diffNames)  #username with current lowest log-in attempts
+counter=$(wc -l diffNames | cut -d ' ' -f1)   #number of diff names to check
+count=0
+
+cat diffNames | while read line; do
+        current=$(grep -c $line nameFile)
+        count=$(( $count + 1 ))
+        if [[ $current -lt $(grep -c $lowest nameFile) ]]
+        then
+                lowest=$line
+
+        fi
+        if [[ $count -eq $counter ]]
+        then
+                echo "Question 4: $lowest"
+        fi
+done
+
+echo "Question 5: $(grep "Accepted password" auth.log | cut -d ' ' -f9)"

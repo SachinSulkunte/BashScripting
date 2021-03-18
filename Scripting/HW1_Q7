@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+watch -n 2 "tail -1 auth.log > monitorChange.txt | grep 'Accepted password' monitorChange.txt | cut -d ' ' -f1-3,9,11 > new_login.txt"
+
