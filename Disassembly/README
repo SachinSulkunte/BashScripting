@@ -1,3 +1,5 @@
 my_memcmp() - implementation of memcmp() C library function as x86_64 assembly language (intel syntax)
 
 part*.dis - static analysis of assembly code to determine correct password and encryption algorithm (see comments)
+
+ObjectFileDisplay - script finds object files in current directory and disassembles them, creates a sorted file containing most frequently used assembly instructions
