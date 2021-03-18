@@ -7,19 +7,13 @@
 #include <string.h>
 #include <unistd.h>
 
-// Sample code for Lab 04: Content Scrambling.  Feel free to use this as the basis for your solution.
-
-
-// Some enumerations which you may find helpful.
 typedef enum {ADD, SUB, XOR, WRITE} operation_t;
 typedef enum {BYTE = 1, WORD = 2, DWORD = 4} oper_size_t;
 
 
 void *mmap_files(char *infilename, char *outfilename, size_t *out_size) {
   /* 
-   * Use mmap() to map a file into our memory space, rather than read the whole file into a buffer.
-   * For large files this is a performance win, and it avoids dealing with explicitly reading and
-   * writing the file.
+   * Use mmap() to map a file into  memory space, rather than read the whole file into a buffer.
    *
    * Returns a pointer to the mapped file and updates the size variable on success.  Returns NULL
    * on failure.
@@ -33,8 +27,7 @@ void *mmap_files(char *infilename, char *outfilename, size_t *out_size) {
     perror("Error opening input file");
     return NULL;
   }
-  // fstat() fetches statistics about a file.  In this case, we need the size so we can map the
-  // whole thing.
+  // fstat() to get file size
   success = fstat(in_fd, &sbuf);
   if (success < 0) {
     perror("Error finding file size");
@@ -49,7 +42,6 @@ void *mmap_files(char *infilename, char *outfilename, size_t *out_size) {
   }
 
   // Copy input file to output file
-  // Start by opening the output file
   out_fd = open(outfilename, O_RDWR|O_CREAT, 0666);
   if (out_fd < 0) {
     perror("Error opening output file");
@@ -71,7 +63,7 @@ void *mmap_files(char *infilename, char *outfilename, size_t *out_size) {
   // Copy from the input file to the output file
   memcpy(out_mapped, in_mapped, *out_size);
 
-  // Now that mmap has succeeded, we don't need to keep the fds open.
+  // close the fds
   munmap(in_mapped, *out_size);
   close(in_fd);
   close(out_fd);
@@ -136,73 +128,49 @@ int main(int argc, char **argv) {
 
       case ADD:
         if (oper_size == BYTE) {
-          printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
           *((unsigned char *)(mapped + offset)) += operand;
-          printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
         }
         else if (oper_size == WORD) {
-          printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
           *((unsigned short int *)(mapped + offset)) += operand;
-          printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
         }
         else if (oper_size == DWORD) {
-          printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
           *((unsigned int *)(mapped + offset)) += operand;
-          printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
         }
         break;
 
       case SUB:
         if (oper_size == BYTE) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
           *((unsigned char *)(mapped + offset)) -= operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
         }
         else if (oper_size == WORD) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
           *((unsigned short int *)(mapped + offset)) -= operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
         }
         else if (oper_size == DWORD) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
           *((unsigned int *)(mapped + offset)) -= operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
         }
         break;
       
       case XOR:
         if (oper_size == BYTE) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
           *((unsigned char *)(mapped + offset)) ^= operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
         }
         else if (oper_size == WORD) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
           *((unsigned short int *)(mapped + offset)) ^= operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
         }
         else if (oper_size == DWORD) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
           *((unsigned int *)(mapped + offset)) ^= operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
         }
         break;
 
       case WRITE:
         if (oper_size == BYTE) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
           *((unsigned char *)(mapped + offset)) = operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned char *)(mapped + offset)));
         }
         else if (oper_size == WORD) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
           *((unsigned short int *)(mapped + offset)) = operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned short int *)(mapped + offset)));
         }
         else if (oper_size == DWORD) {
-          //printf("BEFORE %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
           *((unsigned int *)(mapped + offset)) = operand;
-          //printf("AFTER %d %x %x\n", oper_size, offset, *((unsigned int *)(mapped + offset)));
         }
         break;
 
