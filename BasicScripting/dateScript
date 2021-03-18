@@ -1,0 +1,8 @@
+currentDate=`date | cut -d' ' -f4`
+hour=`date | cut -d' ' -f4 | cut -d':' -f1`
+min=`date | cut -d' ' -f4 | cut -d':' -f2`
+if [ $hour  -gt 12 ]
+then
+	hour=$(( $hour - 12 ))
+fi
+echo "$hour:$min"

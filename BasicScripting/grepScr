@@ -1,0 +1,41 @@
+#!/bin/bash
+if [ $# -ne 1 ]
+then
+	echo "Incorrect number of arguments"
+	exit 1
+elif [ ! -r $1 ]
+then	
+	echo "Unreadable file"
+	exit 1
+fi
+
+wcLines=`wc -l $1 | cut -d ' ' -f1`
+grepLines=`grep -c ^ $1`
+
+if [ $wcLines -eq $grepLines ] 
+then
+	echo "Same size"
+else
+	echo "Different sizes"
+fi
+
+echo  "Enter a character"
+read userChar
+
+charCount=`grep -c ^$userChar $1`
+if [ $charCount -eq $wcLines ]
+then
+	echo "All lines start with $userChar"
+else
+	count=`grep -cv ^$userChar $1`
+	echo "$count do not match beginning"
+fi
+
+charEnd=`grep -c $userChar$ $1`
+if [ $charEnd -eq $wcLines ]
+then
+	echo "All lines end with $userChar"
+else
+	count=`grep -cv $userChar$ $1`
+	echo "$count do not match ending"
+fi
