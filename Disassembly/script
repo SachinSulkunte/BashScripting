@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+  echo "usage: $0 <directory>"
+  exit 1
+fi
+
+for file in $1/*; do
+  # finds commands + count for every file it's run on
+  objdump -d -M intel $file 2> /dev/null | awk '/^[ ]*[a-f0-9]+:/ {print}' | cut -f3 | cut -sd ' ' -f1 >> ./intermediary.txt
+done
+
+cat < ./intermediary.txt | sort | uniq -c | sort -nr > ./histogram.txt
+rm ./intermediary.txt
+echo "Results in histogram.txt"

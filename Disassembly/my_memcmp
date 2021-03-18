@@ -1,0 +1,33 @@
+    .intel_syntax noprefix
+
+    .global my_memcmp
+
+    .section .text
+
+my_memcmp:
+    mov   r8, 0               # counter variable
+    mov   r9, rdx
+    dec   r9
+
+
+loop:
+    mov   cl, BYTE [rdi+r8]
+    cmp   cl, BYTE [rsi+r8]   # compare bytes in str1 and str2
+    jne   diff
+
+    inc   r8                  # increment the counter
+    cmp   r8, r9              # check if counter = total
+    je    return_equal        # return 0 if reached the end
+    jmp   loop                # jump to beginning ogf loop
+
+diff:
+    mov   cl, BYTE [rdi+r8]   # get value at offset
+    sub   cl, BYTE [rsi+r8]   # get difference in bytes
+    movsx rax, cl
+    ret
+
+return_equal:
+    mov   rax, 0          #return 0
+    ret
+
+
