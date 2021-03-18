@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -n "$1 `whoami` " >> ~/cronlog
+echo -n "$$ " >> ~/cronlog
+echo "`date +%m-%d-%y_%H:%M:%S` " >> ~/cronlog

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+echo -n "Enter your friend's name: "
+read name1
+
+echo -n "Enter another friend's name: "
+read name2
+
+echo -n "Enter a third friend's name: "
+read name3
+
+if [[ $name1 < $name2 && $name1 < $name3 ]]
+then
+	first=$name1
+	if [[ $name2 < $name3 ]]
+	then
+		second=$name2
+		third=$name3
+	else
+		second=$name3
+		third=$name2
+	fi
+
+elif [[ $name2 < $name1 && $name2 < $name3 ]]
+then
+	first=$name2
+	if [[ $name3 < $name1 ]]
+	then
+		second=$name3
+		third=$name1
+	else
+		second=$name1
+		third=$name3
+	fi
+else
+	first=$name3
+	if [[ $name1 < $name2 ]]
+	then
+		second=$name1
+		third=$name2
+	else
+		second=$name2
+		third=$name1
+	fi
+fi
+
+echo "$first comes before $second who comes before $third in alphabetical order"
+echo "$first $second $third"

@@ -1,0 +1,31 @@
+#!/bin/bash
+if [ $# -lt 1 ] 
+then
+	echo "no arguments"
+else
+	counter=1
+	for val in $*
+	do
+		echo "$counter $val"
+		counter=$(( $counter + 1 ))
+	done
+fi
+
+for (( cnt=1 ; $cnt <= $# ; cnt=$cnt+1 ))
+do
+	remainder=$(( $cnt % 2 ))
+	if [ $remainder -eq 1 ]
+	then
+		echo -n "$cnt "
+	fi
+done
+echo
+for val in $(seq 1 $#)
+do
+	remainder=$(( $val % 2 ))
+	if [ $remainder -eq 0 ]
+	then
+		echo -n "$val "
+	fi
+done
+exit 0

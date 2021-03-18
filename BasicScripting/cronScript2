@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -n "$1 `whoami` "
+echo -n "$$ "
+echo "`date +%m-%d-%y_%H:%M:%S` "
